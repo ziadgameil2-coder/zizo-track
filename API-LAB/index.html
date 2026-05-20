@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Upload Lab</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <h1>File Upload Lab</h1>
+
+  <input type="file" id="fileInput">
+  <button id="uploadBtn">Upload</button>
+
+  <div id="result"></div>
+</div>
+<script>
+document.getElementById('uploadBtn').addEventListener('click', () => {
+    const file = document.getElementById('fileInput').files[0];
+    if(!file){ alert('اختار ملف الأول'); return; }
+
+    const form = new FormData();
+    form.append('file', file);
+
+    fetch('upload.php', {
+        method: 'POST',
+        body: form
+    })
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById('result').innerHTML = 
+        `<div class="card">Status: ${data.status} | File: ${data.file}</div>`;
+        console.log(data);
+    });
+});
+</script>
+</body>
+</html>
